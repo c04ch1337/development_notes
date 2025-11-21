@@ -147,3 +147,150 @@ This appendix organizes the core instructional content that drove the project's 
 
 > **Phoenix Telemetry:** Stylized Mind/Heart/Body visualization. Metrics: Context Tokens, Prompt Latency, Overall Latency, Orchestration Latency, CPU %, GPU %, Memory %. All interactive via hover/SSE. **Scheduler:** Must include **Task Name, Target Agent/Role, Mission/Goal, Resource Context, Recurrence Pattern (CRON-style)** configuration form and monitoring table.
 ```
+
+
+
+That's a well-defined set of tasks for the core of your **Rust Agent Control API**. The next steps involve translating these functional requirements into concrete Rust code structure and library implementation, focusing on asynchronous programming and type safety.
+
+Here is the detailed roadmap to achieve the listed objectives.
+
+-----
+
+## 💻 I. Next Steps for Rust Backend Implementation
+
+The immediate next step is to set up the necessary file structure and add the required dependencies to your `Cargo.toml`.
+
+### 1\. 🦀 Setup and Dependencies
+
+  * **Action:** In `agent_control_api/Cargo.toml`, add the following crates:
+      * `tokio` (for the async runtime)
+      * `axum` or `tonic` (for the API server)
+      * `serde` and `serde_json` (for deserializing commands)
+      * `sqlx` (for database access)
+      * `pgvector` (for vector operations with `sqlx`)
+      * `redis` and `deadpool-redis` or a similar pool (for session state)
+      * `std::fs` utilities (for file access)
+
+### 2\. 🌉 LLM Bridge: `LlmCommand` Struct
+
+| Requirement | Rust Action | Code Snippet Focus |
+| :--- | :--- | :--- |
+| Define Rust `struct` for **`LlmCommand`** using **`serde`** to safely deserialize incoming JSON function calls from Gemini. | Create `src/command_schema.rs` with a single, highly-flexible struct that maps directly to the output of Gemini's **Function Calling** (structured JSON). | Define a robust **`enum`** for the `action` field to ensure commands are strongly typed, and use `serde_json::Value` for generic parameters. |
+
+**Example Structure Focus:**
+
+```rust
+// in src/command_schema.rs
+use serde::{Deserialize};
+use serde_json::Value;
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct LlmCommand {
+    pub action: String, // e.g., "startVerificationRun"
+    pub run_id: Option<String>,
+    pub data: Option<Value>, // Flexible parameters for the action
+}
+
+// In main.rs, the Axum handler will use this:
+async fn handle_llm_command(Json(command): Json<LlmCommand>) -> ...
+```
+
+### 3\. 💾 Memory Access: PostgreSQL/pgvector
+
+| Requirement | Rust Action | Code Snippet Focus |
+| :--- | :--- | :--- |
+| Implement **asynchronous `sqlx` functions** to read/write to **PostgreSQL/pgvector** (Long-Term Memory). | Create `src/db_memory.rs` and define the `PgPool` connection pool. Write asynchronous functions for two primary tasks. | **Structured Memory:** Use `sqlx::query_as!` and `#[derive(sqlx::FromRow)]` to manage structured data (e.g., user config, audit logs). **Semantic Memory:** Use the `pgvector` crate's `Vector` type to store and query embeddings (`<->` operator for distance). |
+
+**Example Function Focus:**
+
+```rust
+// in src/db_memory.rs
+pub async fn get_semantic_context(pool: &PgPool, query_embedding: Vector) -> Result<Vec<ContextChunk>, sqlx::Error> {
+    // Queries the database for nearest neighbors using the pgvector <-> operator
+    let rows = sqlx::query_as!(
+        ContextChunk,
+        "SELECT content, metadata FROM context_store ORDER BY embedding <-> $1 LIMIT 5",
+        query_embedding as Vector // Type casting for pgvector
+    )
+    .fetch_all(pool)
+    .await?;
+    
+    Ok(rows)
+}
+```
+
+### 4\. 🧠 State Management: Redis
+
+| Requirement | Rust Action | Code Snippet Focus |
+| :--- | :--- | :--- |
+| Implement **`redis` functions** for managing **short-term conversational context** and session state. | Create `src/session_state.rs` and set up an asynchronous Redis client pool (e.g., using `deadpool-redis` for reliable pooling with Tokio). | Functions should handle setting/getting key-value pairs (`SET`, `GET`) with a Time-To-Live (**TTL**) for conversation history and user session state. |
+
+**Example Function Focus:**
+
+```rust
+// in src/session_state.rs
+use deadpool_redis::{Pool, redis::AsyncCommands};
+// ...
+pub async fn set_session_context(pool: &Pool, session_id: &str, context: &str) -> Result<(), redis::RedisError> {
+    let mut conn = pool.get().await.map_err(|e| redis::RedisError::from(e))?;
+    // Set a key-value pair with a 1-hour expiration
+    conn.set_ex(session_id, context, 3600).await?; 
+    Ok(())
+}
+```
+
+### 5\. 📜 Master Prompt: File Access
+
+| Requirement | Rust Action | Code Snippet Focus |
+| :--- | :--- | :--- |
+| Logic to read the **`master_prompt.txt`** file from `/opt/agent_files/` and inject it into the LLM context at initialization. | In `src/main.rs`, implement a synchronous function to read the file during the service's startup phase, before the web server is bound. | Use **`std::fs::read_to_string`** to load the file contents into an immutable **`String`**. This string should then be shared across the application, likely via an `Arc` (Atomically Reference Counted) or stored directly in the Agent struct. |
+
+**Example Function Focus:**
+
+```rust
+// in src/agent_logic.rs or main.rs
+const PROMPT_FILE_PATH: &str = "/opt/agent_files/master_prompt.txt";
+
+pub fn load_master_prompt() -> Result<String, std::io::Error> {
+    // Use synchronous reading since this is a one-time operation at startup
+    std::fs::read_to_string(PROMPT_FILE_PATH) 
+}
+
+// In main()
+let master_prompt_content = load_master_prompt()
+    .expect("FATAL: Failed to load Master System Prompt from /opt/agent_files/.");
+// Pass this content to the Agent's application state (e.g., an Axum State struct)
+```
+
+-----
+
+## 📝 II. Obsidian Markdown Note Update
+
+This section updates the **`Next Steps`** checklist in your Obsidian note based on the actions above.
+
+```markdown
+---
+tags: [dev/rust, project/digital-twin, architecture/bare-metal, ai/orchestration, google-ai-studio]
+status: In Progress 🚧
+project_lead: Gemini AI (Initial Design)
+date_started: [[2025-11-21]]
+---
+
+# 🧠 Digital Twin Orchestrator: Master Project Note
+
+... (Previous Sections)
+
+---
+## 📜 Next Steps Checklist (Agent Control API)
+1. **[ ] Finalize the Master System Prompt content** (PDF deliverable).
+2. **[ ] Detail the Rust FFI implementation** for AI model communication.
+3. **[ ] Implement `LlmCommand` struct** in `agent_control_api/src/command_schema.rs` using `serde`.
+4. **[ ] Implement `sqlx` connection pool** and asynchronous functions for pgvector (Semantic Context Retrieval).
+5. **[ ] Implement `deadpool-redis` pool** and functions for short-term conversation history and session state (TTL management).
+6. **[ ] Implement startup logic** to read and store `master_prompt.txt` for LLM context injection.
+
+---
+```
+
+Would you like me to focus on **Step 1: Finalizing the Master System Prompt** content for your PDF deliverable?
