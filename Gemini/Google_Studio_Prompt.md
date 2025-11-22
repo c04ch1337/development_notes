@@ -77,3 +77,88 @@ This visualization (in `/console` right panel and `/toc/telemetry` sub-tab) must
 -----
 
 
+This is an excellent step. Visual fidelity and consistency are critical for a professional, high-security application like PHOENIX ORCH - The Ashen Guard Edition.
+
+I have reviewed the provided screenshots and integrated the specific visual mandates into the final master prompt. To ensure Google Studio respects the branding, we need to explicitly define the logo usage and the overall styling for the two distinct pages.
+
+Here is the final Master System Prompt (V17.1), which includes your logo mandates, a final polish on the design instructions, the bare-metal confirmation, and the necessary scripts for Docker and GitHub.
+
+🔥 PHOENIX ORCH - THE ASHEN GUARD EDITION (V17.1 MASTER PROMPT)
+Goal: Create a production-ready, highly secure React/TypeScript/Tailwind CSS Progressive Web App (PWA) frontend based on the C2 Lexicon, enforcing the Ashen Guard Edition aesthetic, and implementing the Dynamic Agent Command Hierarchy.
+
+1. PWA & Security Mandates (Non-Negotiable)
+Mandate	Detail	Implementation Instruction
+Default Route	Must be CHAT-First.	The main post-initialization route MUST be /console.
+Architecture	Bare Metal First Principle.	Rust Backend deployment assumes a stable, secure, and potentially privileged host (Bare Metal/Dedicated VM) for low-latency network/protocol access (SSH, OPC UA, etc.).
+Data Flow	All dashboard metrics (Telemetry, Status, Pulse) MUST use Server-Sent Events (SSE) via EventSource.	
+2. Branding & Visual Mandates 🎨
+The design must enforce a Deep Dark Mode with high-contrast, glowing accents.
+
+Page / Element	Logo & Naming Mandate	Tailwind Guide / Aesthetic Mandate
+Splash Page (/)	Must use the "PHOENIX DIGITAL TWIN" header (Screenshot 1).	Dominant Red (#DC143C) and Black (#0A0A0A). The "INITIALIZE CORE SYSTEM" button must use the Deep Blood Red (#8B0000) critical accent.
+All Other Pages	Must use the "PHOENIX ORCH" header (Screenshot 4/V3.0 style).	Primary Accent must be Vibrant Orange (#FF7F00) with a subtle CSS text-shadow or box-shadow glow for active states.
+Critical Accent	N/A	Deep Blood Red (#8B0000) must pulsate/throb slowly on active media recording, critical status, and the "FLAME-OUT" rank.
+Digital Anatomy	N/A	The central "Heart" visualization (Screenshot 3) must exhibit a rhythmic Red pulse that syncs visually with incoming SSE data bursts.
+3. C2 Lexicon & Navigation Structure
+Route (Path)	C2 Lexicon Name	Primary Function / Focus
+/console	Command Console	(Default Landing Page) Primary interaction (Chat-First).
+/dossiers	Campaign Dossiers	Management of reusable mission configurations.
+/rdepot	Resource Depot	Configuration, setup, and maintenance of all connections and assets.
+/toc	Tactical Operations Center (TOC)	Monitoring, scheduling, and live system health.
+
+
+---
+
+
+That clarifies the exact flow and branding sequence! You want a two-step initial process: a **Branding Splash Screen** followed by the **Initialization/Login Screen**.
+
+I've updated the V17.2 Master Prompt to reflect this two-stage process using the specific branding you provided for each screen.
+
+---
+
+## 🔥 PHOENIX ORCH - THE ASHEN GUARD EDITION (V17.2 MASTER PROMPT)
+
+**Goal:** Create a production-ready, highly secure **React/TypeScript/Tailwind CSS PWA** frontend with a **Two-Stage Initializer** using the C2 Lexicon and Ashen Guard aesthetic.
+
+### 1. PWA & Security Mandates (Non-Negotiable)
+
+| Mandate | Detail | Implementation Instruction |
+| :--- | :--- | :--- |
+| **Default Route** | Must be CHAT-First. | The final post-login route MUST be **`/console`**. |
+| **Security** | Zero Frontend Credential Exposure. | All sensitive operations must be proxied through the external Rust Backend. |
+| **Real-Time Data** | Mandatory protocol for live updates. | All dashboard metrics MUST use **Server-Sent Events (SSE)** via `EventSource`. |
+
+---
+
+### 2. Initializer Flow & Branding Mandates
+
+The start-up sequence is now **two distinct steps**:
+
+| Stage | Path | Naming & Logo Mandate | Special Effects / Aesthetic Mandate |
+| :--- | :--- | :--- | :--- |
+| **Stage 1: Branding Splash** | **`/`** (Initial Load) | Must display **PHOENIX ORCH** and **"THE ASHEN GUARD EDITION"**. | Use the **Large Logo (Flame + PHOENIX ORCH)** centered on a **Deep Black (`#0A0A0A`)** background. The "IGNITE SYSTEM" button triggers the navigation to Stage 2. |
+| **Stage 2: Login/Init** | **`/init`** (Redirect from Stage 1) | Must use the **"PHOENIX DIGITAL TWIN"** header. | Layout must match the provided screenshot with the **Core Endpoint (Rust Server)** input and the **"INITIALIZE CORE SYSTEM"** button. Success routes to `/console`. |
+| **App Header** | **All other pages** (`/console`, `/toc`, etc.) | Must use the **Small Logo Header ("PHOENIX ORCH Digital Twin Desktop v3.0" style)**. | Uses the **Vibrant Orange (`#FF7F00`)** glow and the Rich Red (`#DC143C`) accents. |
+
+---
+
+### 3. C2 Lexicon & Navigation Structure (Retained)
+
+| Route (Path) | C2 Lexicon Name | Primary Function / Focus |
+| :--- | :--- | :--- |
+| **`/console`** | **Command Console** | **(CHAT-First Landing)** Primary interaction. |
+| **`/dossiers`** | **Campaign Dossiers** | Management of reusable mission configurations. |
+| **`/rdepot`** | **Resource Depot** | Configuration, setup, and maintenance of all connections and assets. |
+| **`/toc`** | **Tactical Operations Center (TOC)** | Monitoring, scheduling, and live system health. |
+
+---
+
+### 4. Detailed Component & Structure Updates
+
+* **Command Console (`/console`):** **CHAT-First** design is mandatory. The Right Panel (Telemetry) displays the **Digital Anatomy** visualization.
+* **Tactical Operations Center (`/toc`):**
+    * **Mission Status Matrix:** Includes dynamic **Agent Command Hierarchy** ranks (T-COM, F-OFF, S-CAD) and the fixed **ORCHESTRATOR-O.N.E (ORCH-0)** rank.
+    * **Vital Signs Telemetry:** Full-screen Digital Anatomy view, with the central "Heart" exhibiting a rhythmic pulse  that visually syncs with incoming SSE data bursts.
+
+---
+
