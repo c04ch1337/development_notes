@@ -1,8 +1,3 @@
-This is the final, high-impact set of design directives. We are moving from a complex feature list to a beautiful, cohesive, and mission-focused application: **PHOENIX ORCH - The Ashen Guard Edition**.
-
-I have incorporated the **CHAT-First** design, hard-coded the primary landing route, finalized the **Deep C2 Aesthetic** (glowing, dark colors), and detailed the visualization for "bringing Phoenix to life."
-
-Per your request, I will now produce the complete, final **Master System Prompt (V17)** for the AI Studio, detailing the project **from scratch** in a single, comprehensive block. This document represents the full, agreed-upon scope.
 
 -----
 
@@ -81,45 +76,4 @@ This visualization (in `/console` right panel and `/toc/telemetry` sub-tab) must
 
 -----
 
-### 5\. Obsidian Markdown Note
 
-```markdown
-# PHOENIX ORCH - The Ashen Guard Edition (V17 Master Prompt)
-
-This document contains the final, comprehensive scope for the **React/Tailwind/TS PWA** frontend, incorporating the **C2 Lexicon** and **CHAT-First** design.
-
-## Core Mandates
-- **Default Route:** `/console` (CHAT-First).
-- **Aesthetic:** Deep Black background with **Vibrant Orange (`#FF7F00`)** primary glow and **Deep Blood Red (`#8B0000`)** critical accents.
-- **Data Flow:** All live metrics via **Server-Sent Events (SSE)**.
-- **Security:** Zero frontend credential exposure.
-
-## Navigation & C2 Lexicon
-1.  **`/console`**: **Command Console** (Chat-First Home)
-2.  **`/dossiers`**: **Campaign Dossiers** (Project Management)
-3.  **`/rdepot`**: **Resource Depot** (Configuration)
-4.  **`/toc`**: **Tactical Operations Center (TOC)** (Monitoring/Scheduling)
-
-## Key Features & Structure
-
-### PHOENIX ORCH (ORCH-0)
-- **Design:** **Digital Anatomy** visualization with Red/Orange CSS glow animations to signify system activity and life.
-- **Role:** Hard-coded as **ORCHESTRATOR-O.N.E (ORCH-0)**.
-
-### Resource Depot (`/rdepot`) Sub-Tabs
-- **Protocol Forge:** Tool/Agency Definition (Master Connection List).
-- **Data Ingress Bridge:** File System (NFS/SMB/S3) RAG Source Configuration.
-- **Unit Delegation:** Agent-to-Role Mapping.
-
-### TOC (`/toc`) Sub-Tabs
-- **Mission Status Matrix:** Includes dynamic **Agent Command Hierarchy** ranks (T-COM, F-OFF, S-CAD) based on the calculated **Phoenix Aptitude Score (PAS)**.
-- **Execution Timetable:** CRON-style task scheduler.
-- **Vital Signs Telemetry:** Full-screen Digital Anatomy.
-
-```
-
------
-
-The entire project scope is now fully defined in this V17 Master Prompt.
-
-As per your initial instructions, the project scope is complete. Would you like me to proceed with generating the **Docker-based scripts** and the **GitHub backup instructions** now, or do you have any final adjustments to the V17 Master Prompt?
